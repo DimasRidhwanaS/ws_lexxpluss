@@ -1,0 +1,40 @@
+# Build directories
+build/
+devel/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+
+# ROS generated files
+*.msg.autosave
+*.srv.autosave
+*.action.autosave
+
+# Catkin
+.catkin_workspace
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+
+# Documentation generated
+docs/_build/

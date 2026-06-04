@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<robot name="diff_drive_controller" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Differential drive controller macro -->
+    <xacro:macro name="diff_drive_controller">
+
+        <!-- Gazebo differential drive plugin -->
+        <gazebo>
+            <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+                <!-- Wheel configuration -->
+                <leftJoint>left_wheel_joint</leftJoint>
+                <rightJoint>right_wheel_joint</rightJoint>
+
+                <!-- Wheel properties -->
+                <wheelSeparation>0.5</wheelSeparation>
+                <wheelDiameter>0.12</wheelDiameter>
+
+                <!-- Topic names -->
+                <commandTopic>cmd_vel</commandTopic>
+                <odometryTopic>odom</odometryTopic>
+                <odometryFrame>odom</odometryFrame>
+
+                <!-- Frame names -->
+                <robotBaseFrame>base_footprint</robotBaseFrame>
+
+                <!-- Odometry covariance -->
+                <odometrySource>world</odometrySource>
+
+                <!-- Update rate -->
+                <updateRate>50</updateRate>
+
+                <!-- Command timeout -->
+                <commandTimeout>0.5</commandTimeout>
+
+                <!-- Wheel torque limits -->
+                <maxWheelTorque>10</maxWheelTorque>
+                <maxWheelAcceleration>1.0</maxWheelAcceleration>
+
+                <!-- Publish odometry TF -->
+                <publishOdomTF>true</publishOdomTF>
+                <publishWheelTF>false</publishWheelTF>
+
+                <!-- Odometry noise -->
+                <odometry_covariance_x>0.0001</odometry_covariance_x>
+                <odometry_covariance_y>0.0001</odometry_covariance_y>
+                <odometry_covariance_yaw>0.001</odometry_covariance_yaw>
+            </plugin>
+        </gazebo>
+
+        <!-- Ground truth plugin -->
+        <gazebo>
+            <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+                <robotNamespace>/</robotNamespace>
+                <bodyName>base_link</bodyName>
+                <frameName>map</frameName>
+                <topicName>ground_truth</topicName>
+                <updateRate>30</updateRate>
+            </plugin>
+        </gazebo>
+
+    </xacro:macro>
+
+</robot>

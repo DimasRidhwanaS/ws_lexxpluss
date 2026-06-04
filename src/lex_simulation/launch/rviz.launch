@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Arguments -->
+    <!-- <arg name="model" default="$(find lex_simulation)/robot_description/lex_robot_description.urdf.xacro" /> -->
+    <arg name="model" default="$(find lex_simulation)/robot_description/attachment/arm.urdf.xacro" />
+    <arg name="rvizconfig" default="$(find lex_simulation)/rviz/lex_robot.rviz" />
+
+    <!-- Load robot description to parameter server -->
+    <param name="robot_description"
+            command="$(find xacro)/xacro $(arg model)" />
+
+    <!-- Robot state publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <!-- Joint state publisher GUI -->
+    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+
+    <!-- RViz -->
+    <node name="rviz" pkg="rviz" type="rviz"
+            args="-d $(arg rvizconfig)" required="false" />
+
+</launch>

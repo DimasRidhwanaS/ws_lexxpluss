@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Launch Gazebo -->
+    <include file="$(find lex_simulation)/launch/gazebo.launch" />
+
+    <!-- Launch RViz -->
+    <include file="$(find lex_simulation)/launch/rviz.launch" />
+
+</launch>
