@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Full Navigation Stack Launch File -->
+    <!-- Arguments -->
+    <arg name="use_exploration" default="false" />
+    <arg name="use_mapping" default="false" />
+    <arg name="use_amcl" default="false" />
+    <arg name="map_file" default="" />
+    <arg name="scan_topic" default="/scan" />
+    <arg name="odom_topic" default="/odom" />
+    <arg name="cmd_vel_topic" default="/cmd_vel" />
+
+    <!-- Mapping (SLAM) -->
+    <group if="$(arg use_mapping)">
+        <include file="$(find lex_navigation)/launch/mapping.launch">
+            <arg name="scan_topic" value="$(arg scan_topic)" />
+        </include>
+    </group>
+
+    <!-- AMCL Localization -->
+    <group if="$(arg use_amcl)">
+        <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)" />
+        <node pkg="amcl" type="amcl" name="amcl" output="screen">
+            <param name="odom_frame_id" value="odom" />
+            <param name="base_frame_id" value="base_footprint" />
+            <param name="global_frame_id" value="map" />
+            <param name="scan_topic" value="$(arg scan_topic)" />
+        </node>
+    </group>
+
+    <!-- Navigation -->
+    <include file="$(find lex_navigation)/launch/navigation.launch">
+        <arg name="scan_topic" value="$(arg scan_topic)" />
+        <arg name="odom_topic" value="$(arg odom_topic)" />
+        <arg name="cmd_vel_topic" value="$(arg cmd_vel_topic)" />
+    </include>
+
+    <!-- Frontier Exploration -->
+    <group if="$(arg use_exploration)">
+        <include file="$(find lex_navigation)/launch/exploration.launch">
+            <arg name="scan_topic" value="$(arg scan_topic)" />
+            <arg name="odom_topic" value="$(arg odom_topic)" />
+            <arg name="cmd_vel_topic" value="$(arg cmd_vel_topic)" />
+        </include>
+    </group>
+</launch>

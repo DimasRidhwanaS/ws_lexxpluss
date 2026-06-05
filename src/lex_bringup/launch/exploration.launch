@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Full Autonomous Exploration Launch -->
+    <!-- Launches Gazebo + Mapping + Navigation + Exploration -->
+
+    <!-- Arguments -->
+    <arg name="world_name" default="$(find lex_simulation)/worlds/empty.world" />
+
+    <!-- Launch Gazebo + Navigation + Exploration -->
+    <include file="$(find lex_bringup)/launch/gazebo_navigation.launch">
+        <arg name="use_exploration" value="true" />
+        <arg name="world_name" value="$(arg world_name)" />
+    </include>
+
+</launch>

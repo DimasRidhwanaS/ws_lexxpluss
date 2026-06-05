@@ -81,7 +81,7 @@
         <mu2 value="0.5" />
     </gazebo>
 
-    <xacro:diff_drive_controller />
+    <xacro:diff_drive_controller wheel_separation="${2 * (body_radius + wheel_width/2)}" wheel_diameter="${2 * wheel_radius}" />
 
 
 </robot>

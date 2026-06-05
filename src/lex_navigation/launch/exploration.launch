@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Arguments -->
+    <arg name="scan_topic" default="/scan" />
+    <arg name="odom_topic" default="/odom" />
+    <arg name="cmd_vel_topic" default="/cmd_vel" />
+
+    <!-- Mapping -->
+    <include file="$(find lex_navigation)/launch/mapping.launch">
+        <arg name="scan_topic" value="$(arg scan_topic)" />
+    </include>
+
+    <!-- Navigation -->
+    <include file="$(find lex_navigation)/launch/navigation.launch">
+        <arg name="scan_topic" value="$(arg scan_topic)" />
+        <arg name="odom_topic" value="$(arg odom_topic)" />
+        <arg name="cmd_vel_topic" value="$(arg cmd_vel_topic)" />
+    </include>
+
+    <!-- Exploration -->
+    <node pkg="explore_lite" type="explore" name="explore" output="screen">
+        <rosparam file="$(find lex_navigation)/config/5_frontier_exploration.yaml" command="load" />
+    </node>
+
+</launch>

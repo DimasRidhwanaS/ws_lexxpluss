@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Master Launch File -->
+    <!-- Launches Gazebo simulation + Navigation stack -->
+
+    <!-- Arguments -->
+    <arg name="use_exploration" default="false" />
+    <arg name="world_name" default="$(find lex_simulation)/worlds/empty.world" />
+    <arg name="model" default="$(find lex_simulation)/robot_description/lex_robot_description.urdf.xacro" />
+    <arg name="use_sim_time" default="true" />
+
+    <!-- Set use_sim_time parameter -->
+    <param name="/use_sim_time" value="$(arg use_sim_time)" />
+
+    <!-- Launch Gazebo simulation -->
+    <include file="$(find lex_simulation)/launch/gazebo.launch">
+        <arg name="world_name" value="$(arg world_name)" />
+        <arg name="model" value="$(arg model)" />
+    </include>
+
+    <!-- Launch navigation stack -->
+    <include file="$(find lex_navigation)/launch/full_navigation.launch">
+        <arg name="use_exploration" value="$(arg use_exploration)" />
+        <arg name="use_mapping" value="true" />
+    </include>
+
+</launch>

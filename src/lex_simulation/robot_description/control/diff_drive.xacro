@@ -2,7 +2,7 @@
 <robot name="diff_drive_controller" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- Differential drive controller macro -->
-    <xacro:macro name="diff_drive_controller">
+    <xacro:macro name="diff_drive_controller" params="wheel_separation wheel_diameter">
 
         <!-- Gazebo differential drive plugin -->
         <gazebo>
@@ -12,8 +12,8 @@
                 <rightJoint>right_wheel_joint</rightJoint>
 
                 <!-- Wheel properties -->
-                <wheelSeparation>0.5</wheelSeparation>
-                <wheelDiameter>0.12</wheelDiameter>
+                <wheelSeparation>${wheel_separation}</wheelSeparation>
+                <wheelDiameter>${wheel_diameter}</wheelDiameter>
 
                 <!-- Topic names -->
                 <commandTopic>cmd_vel</commandTopic>
@@ -38,7 +38,7 @@
 
                 <!-- Publish odometry TF -->
                 <publishOdomTF>true</publishOdomTF>
-                <publishWheelTF>false</publishWheelTF>
+                <publishWheelTF>true</publishWheelTF>
 
                 <!-- Odometry noise -->
                 <odometry_covariance_x>0.0001</odometry_covariance_x>

@@ -11,8 +11,7 @@
     <arg name="model"         default="$(find lex_simulation)/robot_description/lex_robot_description.urdf.xacro" />
 
     <!-- Load robot description to parameter server -->
-    <param name="robot_description"
-        command="xacro $(arg model)" />
+    <param name="robot_description" command="xacro $(arg model)" />
 
     <!-- Start Gazebo -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -30,8 +29,8 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
     <!-- Joint state publisher -->
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
         <param name="use_gui" value="false" />
-    </node>
+    </node> -->
 
 </launch>

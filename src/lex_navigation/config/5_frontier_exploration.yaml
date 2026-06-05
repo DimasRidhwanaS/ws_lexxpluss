@@ -1,0 +1,28 @@
+# Frontier Exploration Configuration
+
+# Robot frame
+robot_base_frame: base_footprint
+
+# Topics
+costmap_topic: /move_base/global_costmap/costmap
+costmap_updates_topic: /move_base/global_costmap/costmap_updates
+planner_topic: /move_base/NavfnROS/plan
+
+# Planning frequency (Hz)
+planner_frequency: 0.5
+
+# Timeouts
+progress_timeout: 30.0
+
+# Scales
+potential_scale: 1.0
+gain_scale: 1.0
+
+# Frontier size
+min_frontier_size: 0.5
+
+# Travel point
+travel_point: centroid
+
+# Transform tolerance
+transform_tolerance: 0.5
