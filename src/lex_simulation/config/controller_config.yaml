@@ -4,6 +4,8 @@ joint_state_controller:
 
 # PID gains for Gazebo effort control
 gazebo_ros_control/pid_gains:
+  left_wheel_joint: {p: 0.0, i: 0.0, d: 0.0}
+  right_wheel_joint: {p: 0.0, i: 0.0, d: 0.0}
   ur3e_shoulder_pan_joint: {p: 100.0, i: 0.01, d: 10.0}
   ur3e_shoulder_lift_joint: {p: 100.0, i: 0.01, d: 10.0}
   ur3e_elbow_joint: {p: 100.0, i: 0.01, d: 10.0}

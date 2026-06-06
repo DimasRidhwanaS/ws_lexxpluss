@@ -9,8 +9,10 @@
     <arg name="headless"      default="false" />
     <arg name="debug"         default="false" />
     <arg name="model"         default="$(find lex_simulation)/urdf/lex_base/lex_robot_description.urdf.xacro" />
-    <!-- <arg name="model"           default="$(find lex_simulation)/urdf/lex_robot_with_ur3e.urdf.xacro" /> -->
+    <arg name="base_controller_config"  default="$(find lex_simulation)/config/lex_base/lex_base_controllers.yaml" />
 
+    <rosparam file="$(arg base_controller_config)" command="load" />
+    
     <!-- Load robot description to parameter server -->
     <param name="robot_description" command="xacro $(arg model)" />
 
@@ -30,8 +32,8 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
     <!-- Joint state publisher -->
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
         <param name="use_gui" value="false" />
-    </node>
+    </node> -->
 
 </launch>

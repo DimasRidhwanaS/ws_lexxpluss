@@ -1,16 +1,18 @@
 <?xml version="1.0"?>
 <launch>
 
+  <!-- Set GAZEBO_MODEL_PATH to include custom models -->
+  <env name="GAZEBO_MODEL_PATH" value="$(find lex_simulation)/../gazebo_models_worlds_collection/models:$(optenv GAZEBO_MODEL_PATH)" />
+
   <!-- Arguments -->
     <!-- Gazebo -->
-    <arg name="world_name"    default="$(find lex_simulation)/worlds/empty.world" />
+    <arg name="world_name"    default="$(find lex_simulation)/worlds/warehouse_imported.world" />
     <arg name="paused"        default="false" />
     <arg name="use_sim_time"  default="true" />
     <arg name="gui"           default="true" />
     <arg name="headless"      default="false" />
     <arg name="debug"         default="false" />
     <arg name="model"         default="$(find lex_simulation)/urdf/ur3e/ur3e.gazebo.xacro" />
-    <!-- <arg name="model"           default="$(find lex_simulation)/urdf/lex_robot_with_ur3e.urdf.xacro" /> -->
 
     <!-- ur3e parameters files -->
     <arg name="joint_limit_params"  default="$(find lex_simulation)/config/ur3e/joint_limits.yaml"/>
@@ -23,7 +25,6 @@
     <arg name="safety_limits"               default="false" doc="If True, enable the safety limits controller"/>
     <arg name="safety_pos_margin"           default="0.15"  doc="The lower/upper limits in the safety controller" />
     <arg name="safety_k_position"           default="20"    doc="Used to set k position in the safety controller" />
-
     <arg name="robot_model" value="ur3e" />
 
     <!-- Parameters we share with ur_robot_driver -->
@@ -43,7 +44,6 @@
     <arg name="tf_pub_rate"   default="500"     doc="Rate at which robot_state_publisher should publish transforms."/>
 
 
-
     <!-- Load robot description to parameter server -->
     <param name="robot_description" command="xacro $(arg model)
         robot_model:=$(arg robot_model)
@@ -56,19 +56,6 @@
         safety_pos_margin:=$(arg safety_pos_margin)
         safety_k_position:=$(arg safety_k_position)"
         />
-
-
-    <!-- <param name="robot_description" command="$(find xacro)/xacro '$(find lex_simulation)/gazebo/ur3e/urdf/ur.xacro'
-        robot_model:=$(arg robot_model)
-        joint_limit_params:=$(arg joint_limit_params)
-        kinematics_params:=$(arg kinematics_params)
-        physical_params:=$(arg physical_params)
-        visual_params:=$(arg visual_params)
-        transmission_hw_interface:=$(arg transmission_hw_interface)
-        safety_limits:=$(arg safety_limits)
-        safety_pos_margin:=$(arg safety_pos_margin)
-        safety_k_position:=$(arg safety_k_position)"
-        /> -->
 
     <!-- Start Gazebo -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -97,9 +84,9 @@
     </node>
 
     <!-- Joint state publisher -->
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
         <param name="use_gui" value="false" />
-    </node>
+    </node> -->
 
 <!-- ur_control.launch.xml -->
     <!-- Controller Spawner -->

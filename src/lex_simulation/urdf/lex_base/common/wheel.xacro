@@ -69,8 +69,8 @@
         </transmission>
         
         <gazebo reference="${prefix}_wheel">
-            <mu1>15.0</mu1>
-            <mu2>15.0</mu2>
+            <mu1>50.0</mu1>
+            <mu2>50.0</mu2>
             <kp>1000000.0</kp>
             <kd>100.0</kd>
             <minDepth>0.001</minDepth>

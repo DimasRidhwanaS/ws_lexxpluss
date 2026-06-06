@@ -6,8 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /RobotModel1
-        - /Global1/Global Costmap1
-        - /Local1/Local Costmap1
+        - /RobotModel1/Links1
       Splitter Ratio: 0.5
     Tree Height: 589
   - Class: rviz/Selection
@@ -59,65 +58,6 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        arm_mount_plate:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_eye_left_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_eye_right_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_caster:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_marker_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        left_wheel:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lidar_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_caster:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_marker_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_wheel:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         ur3e_base:
           Alpha: 1
           Show Axes: false
@@ -149,6 +89,10 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        ur3e_tool0_controller:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         ur3e_upper_arm_link:
           Alpha: 1
           Show Axes: false
@@ -169,6 +113,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -275,7 +223,7 @@ Visualization Manager:
       Displays:
         - Alpha: 0.699999988079071
           Class: rviz/Map
-          Color Scheme: costmap
+          Color Scheme: map
           Draw Behind: false
           Enabled: true
           Name: Global Costmap
@@ -322,7 +270,7 @@ Visualization Manager:
       Displays:
         - Alpha: 0.699999988079071
           Class: rviz/Map
-          Color Scheme: costmap
+          Color Scheme: map
           Draw Behind: false
           Enabled: true
           Name: Local Costmap
@@ -397,7 +345,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: map
+    Fixed Frame: ur3e_base
     Frame Rate: 30
   Name: root
   Tools:
@@ -421,7 +369,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 5.6762213706970215
+      Distance: 1.2885518074035645
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -429,17 +377,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.11211729049682617
-        Y: 0.7533553838729858
-        Z: 0
+        X: -0.0191231369972229
+        Y: 0.21836945414543152
+        Z: -1.1920928955078125e-07
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4103982448577881
+      Pitch: 0.3853987157344818
       Target Frame: base_link
-      Yaw: 1.655397653579712
+      Yaw: 0.4604070484638214
     Saved: ~
 Window Geometry:
   Displays:

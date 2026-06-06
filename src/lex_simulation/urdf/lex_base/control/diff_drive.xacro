@@ -33,7 +33,7 @@
                 <commandTimeout>0.5</commandTimeout>
 
                 <!-- Wheel torque limits -->
-                <maxWheelTorque>10</maxWheelTorque>
+                <maxWheelTorque>100</maxWheelTorque>
                 <maxWheelAcceleration>1.0</maxWheelAcceleration>
 
                 <!-- Publish odometry TF -->

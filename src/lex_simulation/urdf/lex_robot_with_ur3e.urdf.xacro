@@ -5,7 +5,7 @@
     <xacro:include filename="$(find lex_simulation)/urdf/ur3e/gazebo/gazebo_ur_macro.xacro" />
 
     <!-- UR3e arm parameters -->
-    <xacro:property name="arm_mount_offset_z" value="0.25" />
+    <xacro:property name="arm_mount_offset_z" value="0.15" />
     <xacro:property name="arm_mount_offset_x" value="0.0" />
     <xacro:property name="arm_mount_offset_y" value="0.0" />
 

@@ -1,52 +1,48 @@
 <?xml version="1.0"?>
 <launch>
+    <!-- Set GAZEBO_MODEL_PATH to include custom models -->
+    <env name="GAZEBO_MODEL_PATH" value="$(find lex_simulation)/../gazebo_models_worlds_collection/models:$(optenv GAZEBO_MODEL_PATH)" />
 
-    <!-- Gazebo arguments -->
-    <arg name="world_name"      default="$(find lex_simulation)/worlds/empty.world" />
+    <arg name="world_name"      default="$(find lex_simulation)/worlds/warehouse_imported.world" />
+    <!-- <arg name="world_name"      default="$(find lex_simulation)/worlds/empty.world" /> -->
     <arg name="paused"          default="false" />
     <arg name="use_sim_time"    default="true" />
     <arg name="gui"             default="true" />
     <arg name="headless"        default="false" />
     <arg name="debug"           default="false" />
-
-    <!-- Robot model -->
     <arg name="model"           default="$(find lex_simulation)/urdf/lex_robot_with_ur3e.urdf.xacro" />
 
-    <!-- UR3e controller configuration -->
-    <arg name="controller_config_file" default="$(find lex_simulation)/config/ur3e/ur3e_controllers.yaml" />
-    <arg name="controllers"          default="joint_state_controller eff_joint_traj_controller" />
-    <arg name="stopped_controllers"  default="joint_group_eff_controller" />
+    <!-- Controller configuration files -->
+    <arg name="controller_config"       default="$(find lex_simulation)/config/controller_config.yaml" />
+    <arg name="controllers"             default="joint_state_controller eff_joint_traj_controller" />
+    <arg name="stopped_controllers"     default="joint_group_eff_controller" />
 
-    <!-- Load combined robot (lex_base + UR3e) URDF to parameter server -->
+    <!-- Load param -->
+    <rosparam file="$(arg controller_config)" command="load" />
     <param name="robot_description" command="xacro $(arg model)" />
-
-    <!-- Start Gazebo with empty world -->
+    
+    <!-- Gazebo -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(arg world_name)" />
-        <arg name="paused"     value="$(arg paused)" />
-        <arg name="gui"        value="$(arg gui)" />
-        <arg name="headless"   value="$(arg headless)" />
-        <arg name="debug"      value="$(arg debug)" />
+        <arg name="world_name"  value="$(arg world_name)" />
+        <arg name="paused"      value="$(arg paused)" />
+        <arg name="gui"         value="$(arg gui)" />
+        <arg name="headless"    value="$(arg headless)" />
+        <arg name="debug"       value="$(arg debug)" />
     </include>
 
-    <!-- Spawn robot in Gazebo with initial joint positions for UR3e -->
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
-          args="-param robot_description -urdf -model lex_robot -z 0.1
-                -J ur3e_shoulder_pan_joint -0.067
-                -J ur3e_shoulder_lift_joint -0.510
-                -J ur3e_elbow_joint 1.277
-                -J ur3e_wrist_1_joint -0.733
-                -J ur3e_wrist_2_joint -1.665
-                -J ur3e_wrist_3_joint 0.0"
-          output="screen" />
+        args="-param robot_description -urdf -model lex_robot -z 0.6"
+        output="screen" />
+
+    <!-- Arm Initial Position -->
+    <node name="arm_initializer" pkg="rostopic" type="rostopic"
+        args="pub -1 /eff_joint_traj_controller/command trajectory_msgs/JointTrajectory '{joint_names: [ur3e_shoulder_pan_joint, ur3e_shoulder_lift_joint, ur3e_elbow_joint, ur3e_wrist_1_joint, ur3e_wrist_2_joint, ur3e_wrist_3_joint], points: [{positions: [0.0, -2.638938, 2.136283, -1.570000, 1.570000, 3.140000], time_from_start: {secs: 2, nsecs: 0}}]}'"
+        output="screen" />
 
     <!-- Robot state publisher -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
         <param name="publish_frequency" value="50.0" />
     </node>
-
-    <!-- Load controller configuration -->
-    <rosparam file="$(arg controller_config_file)" command="load" />
 
     <!-- Spawn controllers -->
     <node name="controller_spawner" pkg="controller_manager" type="spawner"

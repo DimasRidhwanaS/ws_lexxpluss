@@ -2,21 +2,30 @@
 <launch>
 
     <!-- Arguments -->
-    <arg name="world_name"          default="$(find lex_simulation)/worlds/warehouse.world" />
-    <arg name="model"               default="$(find lex_simulation)/urdf/lex_base/lex_robot_description.urdf.xacro" />
+    <arg name="world_name"          default="$(find lex_simulation)/worlds/warehouse_imported.world" />
+    <arg name="model"               default="$(find lex_simulation)/urdf/lex_robot_with_ur3e.urdf.xacro" />
+    <arg name="rvizconfig"          default="$(find lex_simulation)/rviz/lex_robot.rviz" />
+
     <arg name="use_sim_time"        default="true" />
 
     <!-- Set use_sim_time parameter -->
     <param name="/use_sim_time" value="$(arg use_sim_time)" />
 
+    <!-- Load robot description to parameter server -->
+    <param name="robot_description"
+            command="$(find xacro)/xacro $(arg model)" />
+
     <!-- TF -->
-    <!-- <node name="map_to_odom" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 map odom 100" /> -->
+    <node name="map_to_odom" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 map odom 100" />
 
     <!-- Simulation -->
     <include file="$(find lex_simulation)/launch/gazebo.launch">
         <arg name="world_name" value="$(arg world_name)" />
         <arg name="model" value="$(arg model)" />
     </include>
+
+    <node name="rviz" pkg="rviz" type="rviz"
+            args="-d $(arg rvizconfig)" required="false" />
 
     <!-- Navigation -->
     <include file="$(find lex_navigation)/launch/navigation.launch"/>
