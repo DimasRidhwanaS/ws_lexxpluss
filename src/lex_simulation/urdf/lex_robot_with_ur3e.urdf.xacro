@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot name="lex_robot_with_arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find lex_simulation)/urdf/lex_base/lex_robot_description.urdf.xacro" />
+    <xacro:include filename="$(find lex_simulation)/urdf/ur3e/gazebo/gazebo_ur_macro.xacro" />
+
+    <!-- UR3e arm parameters -->
+    <xacro:property name="arm_mount_offset_z" value="0.25" />
+    <xacro:property name="arm_mount_offset_x" value="0.0" />
+    <xacro:property name="arm_mount_offset_y" value="0.0" />
+
+<!-- Mounting plate for UR3e -->
+    <joint name="arm_mount_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="arm_mount_plate" />
+        <origin xyz="${arm_mount_offset_x} ${arm_mount_offset_y} ${arm_mount_offset_z}" rpy="0 0 0" />
+    </joint>
+
+    <link name="arm_mount_plate">
+        <visual>
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+            <origin xyz="0 0 0.01" rpy="0 0 0" />
+            <material name="mount_plate_color">
+                <color rgba="0.4 0.4 0.4 1.0" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+            <origin xyz="0 0 0.01" rpy="0 0 0" />
+        </collision>
+        <inertial>
+            <mass value="0.5" />
+            <origin xyz="0 0 0.01" rpy="0 0 0" />
+            <inertia ixx="0.0005" ixy="0.0" ixz="0.0"
+                     iyy="0.0005" iyz="0.0"
+                     izz="0.0003" />
+        </inertial>
+    </link>
+
+    <gazebo reference="arm_mount_plate">
+        <material>Gazebo/Grey</material>
+    </gazebo>
+
+<!-- UR3e -->
+    <joint name="ur3e_mount_joint" type="fixed">
+        <parent link="arm_mount_plate" />
+        <child link="ur3e_base_link" />
+        <origin xyz="0 0 0.02" rpy="0 0 0" />
+    </joint>
+
+    <xacro:ur3e_robot_gazebo
+        prefix="ur3e_"
+        joint_limits_parameters_file="$(find lex_simulation)/config/ur3e/joint_limits.yaml"
+        kinematics_parameters_file="$(find lex_simulation)/config/ur3e/default_kinematics.yaml"
+        physical_parameters_file="$(find lex_simulation)/config/ur3e/physical_parameters.yaml"
+        visual_parameters_file="$(find lex_simulation)/config/ur3e/visual_parameters.yaml"
+        transmission_hw_interface="hardware_interface/EffortJointInterface"
+    />
+
+</robot>

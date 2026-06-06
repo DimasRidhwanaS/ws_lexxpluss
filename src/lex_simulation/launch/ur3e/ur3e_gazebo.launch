@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Arguments -->
+    <!-- Gazebo -->
+    <arg name="world_name"    default="$(find lex_simulation)/worlds/empty.world" />
+    <arg name="paused"        default="false" />
+    <arg name="use_sim_time"  default="true" />
+    <arg name="gui"           default="true" />
+    <arg name="headless"      default="false" />
+    <arg name="debug"         default="false" />
+    <arg name="model"         default="$(find lex_simulation)/urdf/ur3e/ur3e.gazebo.xacro" />
+    <!-- <arg name="model"           default="$(find lex_simulation)/urdf/lex_robot_with_ur3e.urdf.xacro" /> -->
+
+    <!-- ur3e parameters files -->
+    <arg name="joint_limit_params"  default="$(find lex_simulation)/config/ur3e/joint_limits.yaml"/>
+    <arg name="kinematics_params"   default="$(find lex_simulation)/config/ur3e/default_kinematics.yaml"/>
+    <arg name="physical_params"     default="$(find lex_simulation)/config/ur3e/physical_parameters.yaml"/>
+    <arg name="visual_params"       default="$(find lex_simulation)/config/ur3e/visual_parameters.yaml"/>
+
+    <!-- common parameters -->
+    <arg name="transmission_hw_interface"   default="hardware_interface/EffortJointInterface" />
+    <arg name="safety_limits"               default="false" doc="If True, enable the safety limits controller"/>
+    <arg name="safety_pos_margin"           default="0.15"  doc="The lower/upper limits in the safety controller" />
+    <arg name="safety_k_position"           default="20"    doc="Used to set k position in the safety controller" />
+
+    <arg name="robot_model" value="ur3e" />
+
+    <!-- Parameters we share with ur_robot_driver -->
+    <arg name="controller_config_file"    default="$(find lex_simulation)/config/ur3e/ur3e_controllers.yaml" doc="Config file used for defining the ROS-Control controllers."/>
+    <arg name="controllers"           default="joint_state_controller eff_joint_traj_controller"/>
+    <arg name="stopped_controllers"   default="joint_group_eff_controller"/>
+
+    <!-- Setting initial configuration -->
+    <arg name="initial_joint_positions" default=" -J ur3e_shoulder_pan_joint -0.067  -J ur3e_shoulder_lift_joint -0.510 -J ur3e_elbow_joint 1.277 -J ur3e_wrist_1_joint -0.733 -J ur3e_wrist_2_joint -1.665 -J ur3e_wrist_3_joint 0.0" doc="Initial joint configuration of the robot"/>
+
+    <!-- Load controller settings -->
+    <rosparam file="$(arg controller_config_file)" command="load"/>
+
+
+    <!-- robot_state_publisher configuration -->
+    <arg name="tf_prefix"     default=""        doc="tf_prefix used for the robot."/>
+    <arg name="tf_pub_rate"   default="500"     doc="Rate at which robot_state_publisher should publish transforms."/>
+
+
+
+    <!-- Load robot description to parameter server -->
+    <param name="robot_description" command="xacro $(arg model)
+        robot_model:=$(arg robot_model)
+        joint_limit_params:=$(arg joint_limit_params)
+        kinematics_params:=$(arg kinematics_params)
+        physical_params:=$(arg physical_params)
+        visual_params:=$(arg visual_params)
+        transmission_hw_interface:=$(arg transmission_hw_interface)
+        safety_limits:=$(arg safety_limits)
+        safety_pos_margin:=$(arg safety_pos_margin)
+        safety_k_position:=$(arg safety_k_position)"
+        />
+
+
+    <!-- <param name="robot_description" command="$(find xacro)/xacro '$(find lex_simulation)/gazebo/ur3e/urdf/ur.xacro'
+        robot_model:=$(arg robot_model)
+        joint_limit_params:=$(arg joint_limit_params)
+        kinematics_params:=$(arg kinematics_params)
+        physical_params:=$(arg physical_params)
+        visual_params:=$(arg visual_params)
+        transmission_hw_interface:=$(arg transmission_hw_interface)
+        safety_limits:=$(arg safety_limits)
+        safety_pos_margin:=$(arg safety_pos_margin)
+        safety_k_position:=$(arg safety_k_position)"
+        /> -->
+
+    <!-- Start Gazebo -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name"      value="$(arg world_name)" />
+        <arg name="paused"          value="$(arg paused)" />
+        <arg name="gui"             value="$(arg gui)" />
+        <arg name="headless"        value="$(arg headless)" />
+        <arg name="debug"           value="$(arg debug)" />
+    </include>
+
+    <!-- Spawn robot in Gazebo with initial joint positions -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -model lex_robot -z 0.1
+              -J ur3e_shoulder_pan_joint -0.067
+              -J ur3e_shoulder_lift_joint -0.510
+              -J ur3e_elbow_joint 1.277
+              -J ur3e_wrist_1_joint -0.733
+              -J ur3e_wrist_2_joint -1.665
+              -J ur3e_wrist_3_joint 0.0"
+        output="screen"/>
+
+    <!-- Robot state publisher -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+        <param name="publish_frequency" type="double" value="$(arg tf_pub_rate)" />
+        <param name="tf_prefix" value="$(arg tf_prefix)" />
+    </node>
+
+    <!-- Joint state publisher -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="false" />
+    </node>
+
+<!-- ur_control.launch.xml -->
+    <!-- Controller Spawner -->
+    <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
+        args="$(arg controllers)" output="screen" respawn="false" />
+
+    <!-- Load other controllers, but do not start them -->
+    <node name="ros_control_stopped_spawner" pkg="controller_manager" type="spawner"
+        args="--stopped $(arg stopped_controllers)" output="screen" respawn="false" />
+
+</launch>

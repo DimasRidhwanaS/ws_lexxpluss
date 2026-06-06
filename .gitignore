@@ -2,6 +2,10 @@
 build/
 devel/
 
+# External packages
+/src/gazebo_models_worlds_collection/
+/src/universal_robot/
+
 # IDE and editor files
 .vscode/
 .idea/

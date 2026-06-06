@@ -1,36 +1,58 @@
 <?xml version="1.0"?>
 <launch>
 
-  <!-- Arguments -->
-    <arg name="world_name"    default="$(find lex_simulation)/worlds/empty.world" />
-    <arg name="paused"        default="false" />
-    <arg name="use_sim_time"  default="true" />
-    <arg name="gui"           default="true" />
-    <arg name="headless"      default="false" />
-    <arg name="debug"         default="false" />
-    <arg name="model"         default="$(find lex_simulation)/robot_description/lex_robot_description.urdf.xacro" />
+    <!-- Gazebo arguments -->
+    <arg name="world_name"      default="$(find lex_simulation)/worlds/empty.world" />
+    <arg name="paused"          default="false" />
+    <arg name="use_sim_time"    default="true" />
+    <arg name="gui"             default="true" />
+    <arg name="headless"        default="false" />
+    <arg name="debug"           default="false" />
 
-    <!-- Load robot description to parameter server -->
+    <!-- Robot model -->
+    <arg name="model"           default="$(find lex_simulation)/urdf/lex_robot_with_ur3e.urdf.xacro" />
+
+    <!-- UR3e controller configuration -->
+    <arg name="controller_config_file" default="$(find lex_simulation)/config/ur3e/ur3e_controllers.yaml" />
+    <arg name="controllers"          default="joint_state_controller eff_joint_traj_controller" />
+    <arg name="stopped_controllers"  default="joint_group_eff_controller" />
+
+    <!-- Load combined robot (lex_base + UR3e) URDF to parameter server -->
     <param name="robot_description" command="xacro $(arg model)" />
 
-    <!-- Start Gazebo -->
+    <!-- Start Gazebo with empty world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name"      value="$(arg world_name)" />
-        <arg name="paused"          value="$(arg paused)" />
-        <arg name="gui"             value="$(arg gui)" />
-        <arg name="headless"        value="$(arg headless)" />
-        <arg name="debug"           value="$(arg debug)" />
+        <arg name="world_name" value="$(arg world_name)" />
+        <arg name="paused"     value="$(arg paused)" />
+        <arg name="gui"        value="$(arg gui)" />
+        <arg name="headless"   value="$(arg headless)" />
+        <arg name="debug"      value="$(arg debug)" />
     </include>
 
-    <!-- Spawn robot in Gazebo -->
-    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model lex_robot" output="screen"/>
+    <!-- Spawn robot in Gazebo with initial joint positions for UR3e -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+          args="-param robot_description -urdf -model lex_robot -z 0.1
+                -J ur3e_shoulder_pan_joint -0.067
+                -J ur3e_shoulder_lift_joint -0.510
+                -J ur3e_elbow_joint 1.277
+                -J ur3e_wrist_1_joint -0.733
+                -J ur3e_wrist_2_joint -1.665
+                -J ur3e_wrist_3_joint 0.0"
+          output="screen" />
 
     <!-- Robot state publisher -->
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+        <param name="publish_frequency" value="50.0" />
+    </node>
 
-    <!-- Joint state publisher -->
-    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-        <param name="use_gui" value="false" />
-    </node> -->
+    <!-- Load controller configuration -->
+    <rosparam file="$(arg controller_config_file)" command="load" />
 
+    <!-- Spawn controllers -->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner"
+          args="$(arg controllers)" output="screen" respawn="false" />
+
+    <!-- Spawn stopped controllers -->
+    <node name="stopped_controller_spawner" pkg="controller_manager" type="spawner"
+          args="--stopped $(arg stopped_controllers)" output="screen" respawn="false" />
 </launch>

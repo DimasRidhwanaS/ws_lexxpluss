@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<robot name="lex_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Include components -->
+    <xacro:include filename="$(find lex_simulation)/urdf/lex_base/common/wheel.xacro" />
+    <xacro:include filename="$(find lex_simulation)/urdf/lex_base/common/caster_wheel.xacro" />
+    <xacro:include filename="$(find lex_simulation)/urdf/lex_base/sensors/lidar.xacro" />
+    <xacro:include filename="$(find lex_simulation)/urdf/lex_base/control/diff_drive.xacro" />
+
+    <!-- Robot parameters -->
+    <xacro:property name="body_radius" value="0.2" />
+    <xacro:property name="body_height" value="0.1" />
+    <xacro:property name="wheel_radius" value="0.06" />
+    <xacro:property name="wheel_width" value="0.05" />
+    <xacro:property name="caster_radius" value="0.015" />
+
+    <!-- Materials -->
+    <material name="body_color">
+        <color rgba="0.3 0.3 0.3 1.0" />
+    </material>
+    <material name="wheel_color">
+        <color rgba="0.1 0.1 0.1 1.0" />
+    </material>
+
+<!-- Base Footprint -->
+    <link name="base_footprint" />
+
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_footprint" />
+        <child link="base_link" />
+        <origin xyz="0 0 ${wheel_radius - body_height/2}" rpy="0 0 0" />
+    </joint>
+
+<!-- Base Link -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${body_radius}" length="${body_height}" />
+            </geometry>
+            <origin xyz="0 0 ${body_height/2}" rpy="0 0 0" />
+            <material name="body_color" />
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${body_radius}" length="${body_height}" />
+            </geometry>
+            <origin xyz="0 0 ${body_height/2}" rpy="0 0 0" />
+        </collision>
+        <inertial>
+            <mass value="15.0" />
+            <origin xyz="0 0 ${body_height/2}" rpy="0 0 0" />
+            <inertia ixx="0.02" ixy="0.0" ixz="0.0"
+                     iyy="0.02" iyz="0.0"
+                     izz="0.03" />
+        </inertial>
+    </link>
+
+<!-- Base Eye -->
+    <joint name="base_eye_left_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="base_eye_left_link" />
+        <origin xyz="${body_radius} ${body_radius/2} ${body_height/2}" rpy="0 1.578 0" />
+    </joint>
+
+    <link name="base_eye_left_link">
+        <visual>
+            <geometry>
+                <cylinder radius="0.04" length="0.01" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="eye_left_color">
+                <color rgba="1.0 1.0 1.0 1.0" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.04" length="0.01" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                     iyy="0.0001" iyz="0.0"
+                     izz="0.0001" />
+        </inertial>
+    </link>
+
+    <joint name="base_eye_right_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="base_eye_right_link" />
+        <origin xyz="${body_radius} -${body_radius/2} ${body_height/2}" rpy="0 1.578 0" />
+    </joint>
+
+    <link name="base_eye_right_link">
+        <visual>
+            <geometry>
+                <cylinder radius="0.04" length="0.01" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="eye_right_color">
+                <color rgba="1.0 1.0 1.0 1.0" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.04" length="0.01" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                     iyy="0.0001" iyz="0.0"
+                     izz="0.0001" />
+        </inertial>
+    </link>
+
+<!-- Create wheels -->
+    <xacro:wheel prefix="left" reflect="1" parent="base_link"
+                 xyz="0 ${body_radius + wheel_width/2} ${body_height/2}" rpy="0 0 0"
+                 wheel_radius="${wheel_radius}" wheel_width="${wheel_width}" />
+    <xacro:wheel prefix="right" reflect="-1" parent="base_link"
+                 xyz="0 ${-body_radius - wheel_width/2} ${body_height/2}" rpy="0 0 0"
+                 wheel_radius="${wheel_radius}" wheel_width="${wheel_width}" />
+
+<!-- Front and rear casters -->
+    <!-- <xacro:caster_wheel prefix="front" parent="base_link"
+                        xyz="${body_radius - 0.02} 0 ${caster_radius/2 -0.001}" rpy="0 0 0"
+                        caster_radius="${caster_radius}" />
+    <xacro:caster_wheel prefix="rear" parent="base_link"
+                        xyz="${-body_radius + 0.02} 0 ${caster_radius/2 -0.001}" rpy="0 0 0"
+                        caster_radius="${caster_radius}" /> -->
+    <xacro:caster_wheel prefix="front" parent="base_link"
+                        xyz="${body_radius - 0.02} 0 ${-wheel_radius + body_height/2 + caster_radius}" rpy="0 0 0"
+                        caster_radius="${caster_radius}" />
+    <xacro:caster_wheel prefix="rear" parent="base_link"
+                        xyz="${-body_radius + 0.02} 0 ${-wheel_radius + body_height/2 + caster_radius}" rpy="0 0 0"
+                        caster_radius="${caster_radius}" />
+
+<!-- Lidar sensor (on top of body) -->
+    <xacro:lidar_sensor parent="base_link" xyz="0 0 ${body_height + 0.015}" rpy="0 0 0" />
+
+<!-- Gazebo Related -->
+    <gazebo reference="base_link">
+        <material>Gazebo/DarkGrey</material>
+        <mu1 value="0.5" />
+        <mu2 value="0.5" />
+    </gazebo>
+
+    <xacro:diff_drive_controller wheel_separation="${2 * (body_radius + wheel_width/2)}" wheel_diameter="${2 * wheel_radius}" />
+
+
+</robot>

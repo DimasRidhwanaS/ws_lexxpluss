@@ -5,6 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /RobotModel1
+        - /RobotModel1/Links1
       Splitter Ratio: 0.5
     Tree Height: 589
   - Class: rviz/Selection
@@ -56,6 +58,16 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base_eye_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base_eye_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         base_footprint:
           Alpha: 1
           Show Axes: false
@@ -66,6 +78,11 @@ Visualization Manager:
           Show Trail: false
           Value: true
         front_caster:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_marker_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -81,6 +98,11 @@ Visualization Manager:
           Show Trail: false
           Value: true
         rear_caster:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_marker_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -318,7 +340,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: map
+    Fixed Frame: base_footprint
     Frame Rate: 30
   Name: root
   Tools:
@@ -341,20 +363,26 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 0
-      Class: rviz/TopDownOrtho
+      Class: rviz/XYOrbit
+      Distance: 1.2885518074035645
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
+      Field of View: 0.7853981852531433
+      Focal Point:
+        X: -0.0191231369972229
+        Y: 0.21836945414543152
+        Z: -1.1920928955078125e-07
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 92.25827026367188
+      Pitch: 0.3853987157344818
       Target Frame: base_link
-      X: -0.1280716508626938
-      Y: -0.36956891417503357
+      Yaw: 0.4604070484638214
     Saved: ~
 Window Geometry:
   Displays:
