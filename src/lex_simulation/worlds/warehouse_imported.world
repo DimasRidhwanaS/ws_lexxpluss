@@ -59,48 +59,48 @@
     <!-- SHELVES -->
     <include>
       <name>shelves 5</name>
-      <uri>model://shelves_high2_no_collision</uri>
+      <uri>model://shelves_high2</uri>
       <pose>1 -1.5 0   0 0 0</pose>
     </include>
     <include>
       <name>shelves 6</name>
-      <uri>model://shelves_high2_no_collision</uri>
+      <uri>model://shelves_high2</uri>
       <pose>-4.13394 -1.5 0 0 -0 0</pose>
     </include>
 
     <!-- SHELVES -->
     <include>
       <name>shelves 7</name>
-      <uri>model://shelves_high2_no_collision</uri>
+      <uri>model://shelves_high2</uri>
       <pose>1 -2.8 0   0 0 0</pose>
     </include>
     <include>
       <name>shelves 8</name>
-      <uri>model://shelves_high2_no_collision</uri>
+      <uri>model://shelves_high2</uri>
       <pose>-4.13394 -2.8 0 0 -0 0</pose>
     </include>
 
     <!-- SHELVES -->
     <include>
       <name>shelves 9</name>
-      <uri>model://shelves_high2_no_collision</uri>
+      <uri>model://shelves_high2</uri>
       <pose>1 -7.8 0   0 0 0</pose>
     </include>
     <include>
       <name>shelves 10</name>
-      <uri>model://shelves_high2_no_collision</uri>
+      <uri>model://shelves_high2</uri>
       <pose>-4.13394 -7.8 0 0 -0 0</pose>
     </include>
 
     <!-- SHELVES -->
     <include>
       <name>shelves 11</name>
-      <uri>model://shelves_high2_no_collision</uri>
+      <uri>model://shelves_high2</uri>
       <pose>1 -9.1 0   0 0 0</pose>
     </include>
     <include>
       <name>shelves 12</name>
-      <uri>model://shelves_high2_no_collision</uri>
+      <uri>model://shelves_high2</uri>
       <pose>-4.13394 -9.1 0 0 -0 0</pose>
     </include>
 

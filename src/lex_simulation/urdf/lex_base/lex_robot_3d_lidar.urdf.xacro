@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<robot name="lex_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="lex_robot_3d" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- Include components -->
     <xacro:include filename="$(find lex_simulation)/urdf/lex_base/common/wheel.xacro" />
     <xacro:include filename="$(find lex_simulation)/urdf/lex_base/common/caster_wheel.xacro" />
-    <xacro:include filename="$(find lex_simulation)/urdf/lex_base/sensors/lidar.xacro" />
+    <xacro:include filename="$(find lex_simulation)/urdf/lex_base/sensors/livox_mid360.xacro" />
     <xacro:include filename="$(find lex_simulation)/urdf/lex_base/sensors/imu.xacro" />
     <xacro:include filename="$(find lex_simulation)/urdf/lex_base/control/diff_drive.xacro" />
 
@@ -56,7 +56,7 @@
         </inertial>
     </link>
 
-<!-- Base Eye -->
+<!-- Base Eye  -->
     <joint name="base_eye_left_joint" type="fixed">
         <parent link="base_link" />
         <child link="base_eye_left_link" />
@@ -119,7 +119,7 @@
         </inertial>
     </link>
 
-<!-- Create wheels -->
+<!-- Wheels -->
     <xacro:wheel prefix="left" reflect="1" parent="base_link"
                  xyz="0 ${body_radius + wheel_width/2} ${body_height/2}" rpy="0 0 0"
                  wheel_radius="${wheel_radius}" wheel_width="${wheel_width}" />
@@ -127,13 +127,7 @@
                  xyz="0 ${-body_radius - wheel_width/2} ${body_height/2}" rpy="0 0 0"
                  wheel_radius="${wheel_radius}" wheel_width="${wheel_width}" />
 
-<!-- Front and rear casters -->
-    <!-- <xacro:caster_wheel prefix="front" parent="base_link"
-                        xyz="${body_radius - 0.02} 0 ${caster_radius/2 -0.001}" rpy="0 0 0"
-                        caster_radius="${caster_radius}" />
-    <xacro:caster_wheel prefix="rear" parent="base_link"
-                        xyz="${-body_radius + 0.02} 0 ${caster_radius/2 -0.001}" rpy="0 0 0"
-                        caster_radius="${caster_radius}" /> -->
+<!-- Caster Wheels -->
     <xacro:caster_wheel prefix="front" parent="base_link"
                         xyz="${body_radius - 0.02} 0 ${-wheel_radius + body_height/2 + caster_radius}" rpy="0 0 0"
                         caster_radius="${caster_radius}" />
@@ -141,10 +135,10 @@
                         xyz="${-body_radius + 0.02} 0 ${-wheel_radius + body_height/2 + caster_radius}" rpy="0 0 0"
                         caster_radius="${caster_radius}" />
 
-<!-- Lidar sensor (on top of body) -->
-    <xacro:lidar_sensor parent="base_link" xyz="0 0 ${body_height + 0.015}" rpy="0 0 0" />
+<!-- Livox Mid-360 -->
+    <xacro:livox_mid360 parent="base_link" xyz="0 0 ${body_height + 0.02}" rpy="0 0 0" />
 
-<!-- IMU sensor (on top of body, slightly offset) -->
+<!-- IMU Sensor -->
     <xacro:imu_sensor parent="base_link" xyz="0.05 0 ${body_height/2}" rpy="0 0 0" />
 
 <!-- Gazebo Related -->

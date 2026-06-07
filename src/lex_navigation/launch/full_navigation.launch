@@ -11,7 +11,7 @@
     <arg name="odom_topic" default="/odom" />
     <arg name="cmd_vel_topic" default="/cmd_vel" />
 
-    <!-- Mapping (SLAM) -->
+    <!-- Mapping -->
     <group if="$(arg use_mapping)">
         <include file="$(find lex_navigation)/launch/mapping.launch">
             <arg name="scan_topic" value="$(arg scan_topic)" />

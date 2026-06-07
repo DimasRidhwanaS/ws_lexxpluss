@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<robot name="imu_sensor" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- IMU sensor macro -->
+    <xacro:macro name="imu_sensor" params="parent xyz rpy topic_name:=/imu/data frame_name:=imu_link">
+
+        <!-- Joint connecting IMU to base -->
+        <joint name="imu_joint" type="fixed">
+            <parent link="${parent}" />
+            <child link="${frame_name}" />
+            <origin xyz="${xyz}" rpy="${rpy}" />
+        </joint>
+
+        <!-- IMU Link -->
+        <link name="${frame_name}">
+            <visual>
+                <geometry>
+                    <box size="0.04 0.04 0.01" />
+                </geometry>
+                <material name="imu_color">
+                    <color rgba="0.0 0.4 0.0 1.0" />
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="0.04 0.04 0.01" />
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.01" />
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <inertia ixx="0.000001" ixy="0.0" ixz="0.0"
+                         iyy="0.000001" iyz="0.0"
+                         izz="0.000001" />
+            </inertial>
+        </link>
+
+        <!-- Gazebo IMU Plugin -->
+        <gazebo reference="${frame_name}">
+            <sensor type="imu" name="imu_sensor">
+                <pose>0 0 0 0 0 0</pose>
+                <visualize>false</visualize>
+                <update_rate>100</update_rate>
+                <imu>
+                    <angular_velocity>
+                        <x>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>0.01</stddev>
+                            </noise>
+                        </x>
+                        <y>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>0.01</stddev>
+                            </noise>
+                        </y>
+                        <z>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>0.01</stddev>
+                            </noise>
+                        </z>
+                    </angular_velocity>
+                    <linear_acceleration>
+                        <x>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>0.017</stddev>
+                            </noise>
+                        </x>
+                        <y>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>0.017</stddev>
+                            </noise>
+                        </y>
+                        <z>
+                            <noise type="gaussian">
+                                <mean>0.0</mean>
+                                <stddev>0.017</stddev>
+                            </noise>
+                        </z>
+                    </linear_acceleration>
+                </imu>
+                <plugin name="gazebo_ros_imu" filename="libgazebo_ros_imu_sensor.so">
+                    <topicName>${topic_name}</topicName>
+                    <bodyName>${frame_name}</bodyName>
+                    <frameName>${frame_name}</frameName>
+                    <updateRate>100</updateRate>
+                </plugin>
+            </sensor>
+            <material>Gazebo/Green</material>
+        </gazebo>
+
+    </xacro:macro>
+
+</robot>

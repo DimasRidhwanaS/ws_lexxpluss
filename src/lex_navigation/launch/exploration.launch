@@ -2,24 +2,33 @@
 <launch>
 
     <!-- Arguments -->
-    <arg name="scan_topic" default="/scan" />
-    <arg name="odom_topic" default="/odom" />
-    <arg name="cmd_vel_topic" default="/cmd_vel" />
+    <arg name="use_sim_time"   default="true" />
+    <arg name="scan_topic"     default="/scan" />
+    <arg name="odom_topic"     default="/odom" />
+    <arg name="cmd_vel_topic"  default="/cmd_vel" />
+
+    <param name="/use_sim_time" value="$(arg use_sim_time)" />
 
     <!-- Mapping -->
     <include file="$(find lex_navigation)/launch/mapping.launch">
         <arg name="scan_topic" value="$(arg scan_topic)" />
     </include>
 
-    <!-- Navigation -->
-    <include file="$(find lex_navigation)/launch/navigation.launch">
-        <arg name="scan_topic" value="$(arg scan_topic)" />
-        <arg name="odom_topic" value="$(arg odom_topic)" />
-        <arg name="cmd_vel_topic" value="$(arg cmd_vel_topic)" />
-    </include>
+    <!-- Navigation with exploration costmap -->
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <param name="use_sim_time" value="$(arg use_sim_time)" />
+        <rosparam file="$(find lex_navigation)/config/0_move_base_config.yaml"          command="load" />
+        <rosparam file="$(find lex_navigation)/config/1_global_planner_config.yaml"     command="load" />
+        <rosparam file="$(find lex_navigation)/config/2_DWA_local_planner_config.yaml"  command="load" />
+        <rosparam file="$(find lex_navigation)/config/3_costmap_exploration.yaml"       command="load" />
+        <remap from="odom"      to="$(arg odom_topic)" />
+        <remap from="cmd_vel"   to="$(arg cmd_vel_topic)" />
+        <remap from="scan"      to="$(arg scan_topic)" />
+    </node>
 
     <!-- Exploration -->
     <node pkg="explore_lite" type="explore" name="explore" output="screen">
+        <param name="use_sim_time" value="$(arg use_sim_time)" />
         <rosparam file="$(find lex_navigation)/config/5_frontier_exploration.yaml" command="load" />
     </node>
 

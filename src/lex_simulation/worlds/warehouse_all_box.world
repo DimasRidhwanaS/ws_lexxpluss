@@ -1,0 +1,159 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="warehouse_all_box">
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <physics name='default_physics' default='0' type='ode'>
+      <gravity>0 0 -9.8066</gravity>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>10</iters>
+          <sor>1.3</sor>
+          <use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>500</real_time_update_rate>
+      <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    </physics>
+
+    <!-- =================================
+            4 ROWS OF SHELVES (A, B, C, D)
+            WITH PALLETS AND BOXES (1.75m gaps)
+         ================================= -->
+
+    <!-- ROW A (y = 3.4) -->
+    <include><name>shelf_A1</name><uri>model://shelves_high2</uri><pose>1 3.4 0 0 0 0</pose></include>
+    <include><name>box_A1_1</name><uri>model://big_box3</uri><pose>-0.75 3.4 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>tray_A1_2</name><uri>model://europallet</uri><pose>1.0 3.4 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>box_A1_3</name><uri>model://big_box3</uri><pose>2.75 3.4 0.1 0 0 0</pose><static>true</static></include>
+
+    <include><name>shelf_A2</name><uri>model://shelves_high2</uri><pose>-4.13394 3.4 0 0 0 0</pose></include>
+    <include><name>tray_A2_1</name><uri>model://europallet</uri><pose>-5.85 3.4 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>box_A2_2</name><uri>model://big_box3</uri><pose>-4.1 3.4 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>tray_A2_3</name><uri>model://europallet</uri><pose>-2.35 3.4 0.1 0 0 0</pose><static>true</static></include>
+
+    <!-- ROW B (y = 4.7) -->
+    <include><name>shelf_B1</name><uri>model://shelves_high2</uri><pose>1 4.7 0 0 0 0</pose></include>
+    <include><name>tray_B1_1</name><uri>model://europallet</uri><pose>-0.75 4.7 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>box_B1_2</name><uri>model://big_box3</uri><pose>1.0 4.7 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>tray_B1_3</name><uri>model://europallet</uri><pose>2.75 4.7 0.1 0 0 0</pose><static>true</static></include>
+
+    <include><name>shelf_B2</name><uri>model://shelves_high2</uri><pose>-4.13394 4.7 0 0 0 0</pose></include>
+    <include><name>box_B2_1</name><uri>model://big_box3</uri><pose>-5.85 4.7 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>tray_B2_2</name><uri>model://europallet</uri><pose>-4.1 4.7 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>box_B2_3</name><uri>model://big_box3</uri><pose>-2.35 4.7 0.1 0 0 0</pose><static>true</static></include>
+
+    <!-- ROW C (y = -1.5) -->
+    <include><name>shelf_C1</name><uri>model://shelves_high2</uri><pose>1 -1.5 0 0 0 0</pose></include>
+    <include><name>tray_C1_1</name><uri>model://europallet</uri><pose>-0.75 -1.5 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>box_C1_2</name><uri>model://big_box3</uri><pose>1.0 -1.5 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>tray_C1_3</name><uri>model://europallet</uri><pose>2.75 -1.5 0.1 0 0 0</pose><static>true</static></include>
+
+    <include><name>shelf_C2</name><uri>model://shelves_high2</uri><pose>-4.13394 -1.5 0 0 0 0</pose></include>
+    <include><name>box_C2_1</name><uri>model://big_box3</uri><pose>-5.85 -1.5 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>tray_C2_2</name><uri>model://europallet</uri><pose>-4.1 -1.5 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>box_C2_3</name><uri>model://big_box3</uri><pose>-2.35 -1.5 0.1 0 0 0</pose><static>true</static></include>
+
+    <!-- ROW D (y = -2.8) -->
+    <include><name>shelf_D1</name><uri>model://shelves_high2</uri><pose>1 -2.8 0 0 0 0</pose></include>
+    <include><name>box_D1_1</name><uri>model://big_box3</uri><pose>-0.75 -2.8 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>tray_D1_2</name><uri>model://europallet</uri><pose>1.0 -2.8 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>box_D1_3</name><uri>model://big_box3</uri><pose>2.75 -2.8 0.1 0 0 0</pose><static>true</static></include>
+
+    <include><name>shelf_D2</name><uri>model://shelves_high2</uri><pose>-4.13394 -2.8 0 0 0 0</pose></include>
+    <include><name>tray_D2_1</name><uri>model://europallet</uri><pose>-5.85 -2.8 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>box_D2_2</name><uri>model://big_box3</uri><pose>-4.1 -2.8 0.1 0 0 0</pose><static>true</static></include>
+    <include><name>tray_D2_3</name><uri>model://europallet</uri><pose>-2.35 -2.8 0.1 0 0 0</pose><static>true</static></include>
+
+    <!-- =================================
+            ACCESSORIES
+         ================================= -->
+
+    <include>
+      <name>trash_bin</name>
+      <uri>model://trash_bin</uri>
+      <pose>3.8239 3.403029 0 0 0 0</pose>
+    </include>
+
+    <!-- =================================
+            WALLS (enclosed warehouse - 20x20m, 4m tall)
+         ================================= -->
+
+    <!-- North wall (y = 10) -->
+    <model name="wall_north">
+      <static>true</static>
+      <pose>-5 10 2 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>30 0.2 4</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>30 0.2 4</size></box></geometry>
+          <material><ambient>0.7 0.5 0.3 1</ambient><diffuse>0.7 0.5 0.3 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- South wall (y = -10) -->
+    <model name="wall_south">
+      <static>true</static>
+      <pose>-5 -10 2 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>30 0.2 4</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>30 0.2 4</size></box></geometry>
+          <material><ambient>0.7 0.5 0.3 1</ambient><diffuse>0.7 0.5 0.3 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- West wall (x = -10) -->
+    <model name="wall_west">
+      <static>true</static>
+      <pose>-10 0 2 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>0.2 20 4</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.2 20 4</size></box></geometry>
+          <material><ambient>0.7 0.5 0.3 1</ambient><diffuse>0.7 0.5 0.3 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- East wall (x = 10) -->
+    <model name="wall_east">
+      <static>true</static>
+      <pose>10 0 2 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>0.2 20 4</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.2 20 4</size></box></geometry>
+          <material><ambient>0.7 0.5 0.3 1</ambient><diffuse>0.7 0.5 0.3 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

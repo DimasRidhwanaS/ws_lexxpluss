@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Arguments -->
+    <arg name="use_sim_time"   default="true" />
+    <arg name="map_file"       default="$(find lex_navigation)/maps/warehouse.yaml" />
+    <arg name="scan_topic"     default="/scan" />
+    <arg name="odom_topic"     default="/odom" />
+    <arg name="cmd_vel_topic"  default="/cmd_vel" />
+
+    <param name="/use_sim_time" value="$(arg use_sim_time)" />
+
+    <!-- Map Server -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+        <param name="use_sim_time" value="$(arg use_sim_time)" />
+    </node>
+
+    <!-- AMCL Localization -->
+    <node name="amcl" pkg="amcl" type="amcl" output="screen">
+        <param name="use_sim_time" value="$(arg use_sim_time)" />
+        <param name="odom_frame_id" value="odom" />
+        <param name="base_frame_id" value="base_footprint" />
+        <param name="global_frame_id" value="map" />
+        <param name="scan_topic" value="$(arg scan_topic)" />
+        <param name="initial_pose_x" value="0.0" />
+        <param name="initial_pose_y" value="0.0" />
+        <param name="initial_pose_a" value="0.0" />
+    </node>
+
+    <!-- Navigation -->
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <param name="use_sim_time" value="$(arg use_sim_time)" />
+        <rosparam file="$(find lex_navigation)/config/0_move_base_config.yaml"      command="load" />
+        <rosparam file="$(find lex_navigation)/config/1_global_planner_config.yaml" command="load" />
+        <rosparam file="$(find lex_navigation)/config/2_DWA_local_planner_config.yaml" command="load" />
+        <rosparam file="$(find lex_navigation)/config/3_costmap_config.yaml"       command="load" />
+        <remap from="odom"      to="$(arg odom_topic)" />
+        <remap from="cmd_vel"   to="$(arg cmd_vel_topic)" />
+        <remap from="scan"      to="$(arg scan_topic)" />
+    </node>
+
+</launch>

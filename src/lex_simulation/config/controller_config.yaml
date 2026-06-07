@@ -22,7 +22,7 @@ eff_joint_traj_controller:
     - ur3e_wrist_1_joint
     - ur3e_wrist_2_joint
     - ur3e_wrist_3_joint
-  gains: # Required because we're controlling an effort interface
+  gains: 
     ur3e_shoulder_pan_joint: {p: 2000,  d: 20, i: 1, i_clamp: 1}
     ur3e_shoulder_lift_joint: {p: 6000,  d: 40, i: 1, i_clamp: 1}
     ur3e_elbow_joint: {p: 2000,  d: 20, i: 1, i_clamp: 1}
