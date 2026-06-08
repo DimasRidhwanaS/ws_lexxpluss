@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<robot name="cart" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find lex_simulation)/urdf/lex_base/common/caster_wheel.xacro" />
+
+    <!-- Robot parameters -->
+    <xacro:property name="body_length"     value="0.8" />  
+    <xacro:property name="body_width"      value="0.5" />  
+    <xacro:property name="body_height"     value="0.1" />  
+    <xacro:property name="wall_thickness"  value="0.02" />
+    <xacro:property name="caster_radius"   value="0.025" />
+
+    <xacro:property name="inner_length"    value="${body_length - 2*wall_thickness}" />
+    <xacro:property name="inner_width"     value="${body_width  - 2*wall_thickness}" />
+    <xacro:property name="wall_offset_x"   value="${body_length/2 - wall_thickness/2}" />
+    <xacro:property name="wall_offset_y"   value="${body_width/2  - wall_thickness/2}" />
+
+    <xacro:property name="caster_inset"    value="0.05" />
+    <xacro:property name="caster_x"        value="${body_length/2 - caster_inset}" />
+    <xacro:property name="caster_y"        value="${body_width/2 - caster_inset}" />
+    <xacro:property name="caster_z"        value="${-body_height/2 + caster_radius}" />
+
+    <!-- Materials -->
+    <material name="cart_body_color">
+        <color rgba="0.2 0.4 0.8 1.0" />
+    </material>
+    <material name="cart_wheel_color">
+        <color rgba="0.1 0.1 0.1 1.0" />
+    </material>
+
+    <link name="base_footprint" />
+
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_footprint" />
+        <child  link="base_link" />
+        <origin xyz="0 0 ${body_height/2}" rpy="0 0 0" />
+    </joint>
+
+    <link name="base_link">
+        <inertial>
+            <mass value="5.0" />
+            <origin xyz="0 0 ${body_height/2}" rpy="0 0 0" />
+            <inertia ixx="0.1" ixy="0.0" ixz="0.0"
+                     iyy="0.15" iyz="0.0"
+                     izz="0.2" />
+        </inertial>
+
+        <visual>
+            <geometry>
+                <box size="${body_length} ${body_width} ${wall_thickness}" />
+            </geometry>
+            <origin xyz="0 0 ${wall_thickness/2}" rpy="0 0 0" />
+            <material name="cart_body_color" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${body_length} ${body_width} ${wall_thickness}" />
+            </geometry>
+            <origin xyz="0 0 ${wall_thickness/2}" rpy="0 0 0" />
+        </collision>
+
+        <visual>
+            <geometry>
+                <box size="${wall_thickness} ${inner_width} ${body_height}" />
+            </geometry>
+            <origin xyz="${wall_offset_x} 0 ${body_height/2}" rpy="0 0 0" />
+            <material name="cart_body_color" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${wall_thickness} ${inner_width} ${body_height}" />
+            </geometry>
+            <origin xyz="${wall_offset_x} 0 ${body_height/2}" rpy="0 0 0" />
+        </collision>
+
+        <visual>
+            <geometry>
+                <box size="${wall_thickness} ${inner_width} ${body_height}" />
+            </geometry>
+            <origin xyz="${-wall_offset_x} 0 ${body_height/2}" rpy="0 0 0" />
+            <material name="cart_body_color" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${wall_thickness} ${inner_width} ${body_height}" />
+            </geometry>
+            <origin xyz="${-wall_offset_x} 0 ${body_height/2}" rpy="0 0 0" />
+        </collision>
+
+        <visual>
+            <geometry>
+                <box size="${inner_length} ${wall_thickness} ${body_height}" />
+            </geometry>
+            <origin xyz="0 ${wall_offset_y} ${body_height/2}" rpy="0 0 0" />
+            <material name="cart_body_color" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${inner_length} ${wall_thickness} ${body_height}" />
+            </geometry>
+            <origin xyz="0 ${wall_offset_y} ${body_height/2}" rpy="0 0 0" />
+        </collision>
+
+        <visual>
+            <geometry>
+                <box size="${inner_length} ${wall_thickness} ${body_height}" />
+            </geometry>
+            <origin xyz="0 ${-wall_offset_y} ${body_height/2}" rpy="0 0 0" />
+            <material name="cart_body_color" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${inner_length} ${wall_thickness} ${body_height}" />
+            </geometry>
+            <origin xyz="0 ${-wall_offset_y} ${body_height/2}" rpy="0 0 0" />
+        </collision>
+    </link>
+
+    <xacro:caster_wheel prefix="front_left"  parent="base_link"
+                        xyz="${ caster_x} ${ caster_y} ${caster_z}" rpy="0 0 0"
+                        caster_radius="${caster_radius}" />
+    <xacro:caster_wheel prefix="front_right" parent="base_link"
+                        xyz="${ caster_x} ${-caster_y} ${caster_z}" rpy="0 0 0"
+                        caster_radius="${caster_radius}" />
+    <xacro:caster_wheel prefix="rear_left"   parent="base_link"
+                        xyz="${-caster_x} ${ caster_y} ${caster_z}" rpy="0 0 0"
+                        caster_radius="${caster_radius}" />
+    <xacro:caster_wheel prefix="rear_right"  parent="base_link"
+                        xyz="${-caster_x} ${-caster_y} ${caster_z}" rpy="0 0 0"
+                        caster_radius="${caster_radius}" />
+
+    <gazebo reference="base_link">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
+</robot>

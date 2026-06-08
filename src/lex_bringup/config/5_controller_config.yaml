@@ -1,0 +1,67 @@
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: &loop_hz 500
+
+# PID gains for Gazebo effort control
+gazebo_ros_control/pid_gains:
+  left_wheel_joint: {p: 0.0, i: 0.0, d: 0.0}
+  right_wheel_joint: {p: 0.0, i: 0.0, d: 0.0}
+  ur3e_shoulder_pan_joint: {p: 100.0, i: 0.01, d: 10.0}
+  ur3e_shoulder_lift_joint: {p: 100.0, i: 0.01, d: 10.0}
+  ur3e_elbow_joint: {p: 100.0, i: 0.01, d: 10.0}
+  ur3e_wrist_1_joint: {p: 10.0, i: 0.01, d: 1.0}
+  ur3e_wrist_2_joint: {p: 10.0, i: 0.01, d: 1.0}
+  ur3e_wrist_3_joint: {p: 1.0, i: 0.01, d: 0.1}
+
+eff_joint_traj_controller:
+  type: effort_controllers/JointTrajectoryController
+  joints: &robot_joints
+    - ur3e_shoulder_pan_joint
+    - ur3e_shoulder_lift_joint
+    - ur3e_elbow_joint
+    - ur3e_wrist_1_joint
+    - ur3e_wrist_2_joint
+    - ur3e_wrist_3_joint
+  gains: 
+    ur3e_shoulder_pan_joint: {p: 2000,  d: 20, i: 1, i_clamp: 1}
+    ur3e_shoulder_lift_joint: {p: 6000,  d: 40, i: 1, i_clamp: 1}
+    ur3e_elbow_joint: {p: 2000,  d: 20, i: 1, i_clamp: 1}
+    ur3e_wrist_1_joint: {p: 500,  d: 1, i: 1, i_clamp: 1}
+    ur3e_wrist_2_joint: {p: 500,  d: 1, i: 1, i_clamp: 1}
+    ur3e_wrist_3_joint: {p: 10,  d: 0.1, i: 0, i_clamp: 1}
+  constraints:
+    goal_time: 0.6
+    stopped_velocity_tolerance: 0.05
+    ur3e_shoulder_pan_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_shoulder_lift_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_elbow_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_wrist_1_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_wrist_2_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_wrist_3_joint: {trajectory: 0.1, goal: 0.1}
+  stop_trajectory_duration: 0.5
+  state_publish_rate: *loop_hz
+  action_monitor_rate: 10
+
+joint_group_eff_controller:
+  type: effort_controllers/JointGroupEffortController
+  joints: *robot_joints
+
+pos_joint_traj_controller:
+  type: position_controllers/JointTrajectoryController
+  joints: *robot_joints
+  constraints:
+    goal_time: 0.6
+    stopped_velocity_tolerance: 0.05
+    ur3e_shoulder_pan_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_shoulder_lift_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_elbow_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_wrist_1_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_wrist_2_joint: {trajectory: 0.1, goal: 0.1}
+    ur3e_wrist_3_joint: {trajectory: 0.1, goal: 0.1}
+  stop_trajectory_duration: 0.5
+  state_publish_rate: *loop_hz
+  action_monitor_rate: 10
+
+joint_group_pos_controller:
+  type: position_controllers/JointGroupPositionController
+  joints: *robot_joints

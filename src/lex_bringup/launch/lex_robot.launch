@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Arguments -->
+    <arg name="use_sim_time"    default="true" />
+    <arg name="use_rviz"        default="true" />
+    <arg name="use_mapping"     default="false" />
+
+    <arg name="scan_topic"      default="/scan" />
+    <arg name="odom_topic"      default="/odom/filtered" />
+    <arg name="cmd_vel_topic"   default="/cmd_vel" />
+
+    <arg name="map_file"                default="$(find lex_navigation)/maps/warehouse.yaml" />
+    <arg name="move_base_config"        default="$(find lex_bringup)/config/0_move_base_config.yaml" />
+    <arg name="global_planner_config"   default="$(find lex_bringup)/config/1_global_planner_config.yaml" />
+    <arg name="local_planner_config"    default="$(find lex_bringup)/config/2_TEB_local_planner_config.yaml" />
+    <arg name="costmap_config"          default="$(find lex_bringup)/config/3_costmap_config.yaml" />
+    <arg name="mapping_config"          default="$(find lex_bringup)/config/4_mapping_config.yaml" />
+    <arg name="controller_config"       default="$(find lex_bringup)/config/5_controller_config.yaml" />
+    <arg name="localization_config"     default="$(find lex_bringup)/config/6_ekf_localization.yaml" />
+
+    <arg name="world_name"      default="$(find lex_simulation)/worlds/warehouse_all_box.world" />
+    <arg name="model"           default="$(find lex_simulation)/urdf/lex_robot_with_ur3e.urdf.xacro" />
+    <arg name="rvizconfig"              default="$(find lex_bringup)/config/rviz/lex_robot.rviz" />
+    <arg name="rvizconfig_mapping"      default="$(find lex_bringup)/config/rviz/mapping.rviz" />
+
+    <param name="/use_sim_time" value="$(arg use_sim_time)" />
+    
+    
+    <!-- Simulation -->
+    <include file="$(find lex_simulation)/launch/gazebo.launch">
+        <arg name="use_sim_time"            value="$(arg use_sim_time)" />
+        <arg name="world_name"              value="$(arg world_name)" />
+        <arg name="model"                   value="$(arg model)" />
+    </include>
+
+    <!-- Mapping -->
+    <group if="$(arg use_mapping)">
+        <include file="$(find lex_navigation)/launch/mapping.launch" >
+            <arg name="use_sim_time"            value="$(arg use_sim_time)" />
+            <arg name="scan_topic"              value="$(arg scan_topic)" />
+            <arg name="mapping_config"          value="$(arg mapping_config)" />
+        </include>
+
+        <include file="$(find lex_simulation)/launch/rviz.launch" if="$(arg use_rviz)">
+            <arg name="use_sim_time"            value="$(arg use_sim_time)" />
+            <arg name="rvizconfig"              value="$(arg rvizconfig_mapping)" />
+        </include>
+    </group>
+        
+    <!-- Navigation -->
+    <group unless="$(arg use_mapping)">
+        <!-- RVIZ -->
+        <include file="$(find lex_simulation)/launch/rviz.launch" if="$(arg use_rviz)">
+            <arg name="use_sim_time"            value="$(arg use_sim_time)" />
+            <arg name="rvizconfig"              value="$(arg rvizconfig)" />
+        </include>
+    
+
+        <!-- Map Server -->
+        <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+            <param name="use_sim_time" value="$(arg use_sim_time)" />
+        </node>
+
+        <!-- AMCL Localization -->
+        <node name="amcl" pkg="amcl" type="amcl" output="screen">
+            <param name="use_sim_time"      value="$(arg use_sim_time)" />
+            <param name="odom_frame_id"     value="odom" />
+            <param name="base_frame_id"     value="base_footprint" />
+            <param name="global_frame_id"   value="map" />
+            <param name="scan_topic"        value="$(arg scan_topic)" />
+            <param name="initial_pose_x"    value="0.0" />
+            <param name="initial_pose_y"    value="0.0" />
+            <param name="initial_pose_a"    value="0.0" />
+        </node>
+    </group>
+
+    <!-- EKF Localization -->
+    <include file="$(find lex_navigation)/launch/localization.launch">
+        <arg name="use_sim_time"            value="$(arg use_sim_time)" />
+        <arg name="localization_config"     value="$(arg localization_config)" />
+        <arg name="odom_topic"              value="$(arg odom_topic)" />
+    </include>
+
+    
+    <!-- Navigation -->
+    <include file="$(find lex_navigation)/launch/navigation.launch">
+        <arg name="use_sim_time"    value="$(arg use_sim_time)" />
+        <arg name="scan_topic"      value="$(arg scan_topic)" />
+        <arg name="odom_topic"      value="$(arg odom_topic)" />
+        <arg name="cmd_vel_topic"   value="$(arg cmd_vel_topic)" />
+
+        <arg name="move_base_config"        value="$(arg move_base_config)" />
+        <arg name="global_planner_config"   value="$(arg global_planner_config)" />
+        <arg name="local_planner_config"    value="$(arg local_planner_config)" />
+        <arg name="costmap_config"          value="$(arg costmap_config)" />
+    </include>
+</launch>

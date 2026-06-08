@@ -14,6 +14,7 @@ sudo apt install -y \
     ros-noetic-map-server \
     ros-noetic-move-base \
     ros-noetic-dwa-local-planner \
+    ros-noetic-teb-local-planner \
     ros-noetic-navfn \
     ros-noetic-costmap-2d \
     ros-noetic-explore-lite \

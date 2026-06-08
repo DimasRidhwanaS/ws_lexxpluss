@@ -3,10 +3,11 @@
 
     <!-- Arguments -->
     <arg name="model" default="$(find lex_simulation)/urdf/lex_robot_with_ur3e.urdf.xacro" />
+    <!-- <arg name="model" default="$(find lex_simulation)/urdf/cart/cart.urdf.xacro" /> -->
     <!-- <arg name="model" default="$(find lex_simulation)/urdf/lex_base/lex_robot_description.urdf.xacro" /> -->
     <!-- <arg name="model" default="$(find lex_simulation)/urdf/lex_base/attachment/arm.urdf.xacro" /> -->
-    <arg name="rvizconfig" default="$(find lex_simulation)/rviz/lex_robot.rviz" />
-
+    <arg name="rvizconfig"      default="$(find lex_simulation)/rviz/lex_robot.rviz" />
+    <arg name="use_sim_time"    default="true" />
 
     <param name="/use_sim_time" value="true" />
 

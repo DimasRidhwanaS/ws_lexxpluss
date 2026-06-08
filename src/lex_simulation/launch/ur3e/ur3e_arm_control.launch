@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="use_sim_time" default="true" />
+    <param name="/use_sim_time" value="$(arg use_sim_time)" />
+
+    <node name="arm_initializer" pkg="rostopic" type="rostopic" output="screen"
+        args="pub -1 /eff_joint_traj_controller/command trajectory_msgs/JointTrajectory
+        '{joint_names:
+            [ur3e_shoulder_pan_joint,
+             ur3e_shoulder_lift_joint,
+             ur3e_elbow_joint,
+             ur3e_wrist_1_joint,
+             ur3e_wrist_2_joint,
+             ur3e_wrist_3_joint],
+          points:
+            [{positions:
+                [0.0,
+                 -3.0,
+                 -0.5,
+                 -1.570000,
+                 1.570000,
+                 3.140000],
+              time_from_start:
+                {secs: 2, nsecs: 0}}]}'" />
+
+</launch>

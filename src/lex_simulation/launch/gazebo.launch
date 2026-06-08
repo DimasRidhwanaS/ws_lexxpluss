@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-    <!-- Set GAZEBO_MODEL_PATH to include custom models -->
+    <!-- include GAZEBO_MODEL_PATH -->
     <env name="GAZEBO_MODEL_PATH" value="$(find lex_simulation)/worlds/models:$(find lex_simulation)/../gazebo_models_worlds_collection/models:$(optenv GAZEBO_MODEL_PATH)" />
 
     <arg name="world_name"      default="$(find lex_simulation)/worlds/warehouse_all_box.world" />
-    <!-- <arg name="world_name"      default="$(find lex_simulation)/worlds/empty.world" /> -->
     <arg name="paused"          default="false" />
     <arg name="use_sim_time"    default="true" />
     <arg name="gui"             default="true" />
@@ -12,7 +11,6 @@
     <arg name="debug"           default="false" />
     <arg name="model"           default="$(find lex_simulation)/urdf/lex_robot_with_ur3e.urdf.xacro" />
 
-    <!-- Set use_sim_time globally -->
     <param name="/use_sim_time" value="$(arg use_sim_time)" />
 
     <!-- Controller configuration files -->

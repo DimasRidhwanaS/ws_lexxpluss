@@ -1,0 +1,13 @@
+# Frontier Exploration Configuration
+
+min_frontier_size: 0.1
+visualize: true
+robot_base_frame: base_footprint
+costmap_topic: /move_base/global_costmap/costmap
+costmap_updates_topic: /move_base/global_costmap/costmap_updates
+planner_topic: /move_base/NavfnROS/plan
+planner_frequency: 0.33
+progress_timeout: 30.0
+potential_scale: 3.0
+gain_scale: 1.0
+transform_tolerance: 0.3

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+
+    <param name="cart_description"
+           command="xacro $(find lex_simulation)/urdf/cart/cart.urdf.xacro" />
+
+    <node name="spawn_cart" pkg="gazebo_ros" type="spawn_model"
+          args="-param cart_description -urdf -model cart -x 2 -y 0 -z 0"
+          output="screen" />
+
+    <node name="cart_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+        <param name="tf_prefix" value="cart_" />
+        <param name="publish_frequency" value="50.0" />
+        <param name="use_sim_time" value="true" />
+    </node>
+
+</launch>

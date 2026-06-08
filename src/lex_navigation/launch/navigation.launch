@@ -7,17 +7,21 @@
     <arg name="cmd_vel_topic"  default="/cmd_vel" />
     <arg name="scan_topic"     default="/scan" />
 
+    <arg name="move_base_config"        default="$(find lex_navigation)/config/0_move_base_config.yaml" />
+    <arg name="global_planner_config"   default="$(find lex_navigation)/config/1_global_planner_config.yaml" />
+    <arg name="local_planner_config"    default="$(find lex_navigation)/config/2_DWA_local_planner_config.yaml" />
+    <arg name="costmap_config"          default="$(find lex_navigation)/config/3_costmap_config.yaml" />
+
     <param name="/use_sim_time" value="$(arg use_sim_time)" />
 
-    <!-- Move Base Node -->
+    <!-- Move Base -->
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
         <param name="use_sim_time" value="$(arg use_sim_time)" />
-        <rosparam file="$(find lex_navigation)/config/0_move_base_config.yaml"          command="load" />
-        <rosparam file="$(find lex_navigation)/config/1_global_planner_config.yaml"     command="load" />
-        <rosparam file="$(find lex_navigation)/config/2_DWA_local_planner_config.yaml"  command="load" />
-        <rosparam file="$(find lex_navigation)/config/3_costmap_config.yaml"           command="load" />
+        <rosparam file="$(arg move_base_config)"            command="load" />
+        <rosparam file="$(arg global_planner_config)"       command="load" />
+        <rosparam file="$(arg local_planner_config)"        command="load" />
+        <rosparam file="$(arg costmap_config)"              command="load" />
 
-        <!-- Remapping -->
         <remap from="odom"      to="$(arg odom_topic)" />
         <remap from="cmd_vel"   to="$(arg cmd_vel_topic)" />
         <remap from="scan"      to="$(arg scan_topic)" />
