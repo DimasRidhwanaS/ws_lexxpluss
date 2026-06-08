@@ -25,6 +25,10 @@ __pycache__/
 *.srv.autosave
 *.action.autosave
 
+# ROS bags
+/rosbag/
+*.bag
+
 # Catkin
 .catkin_workspace
 

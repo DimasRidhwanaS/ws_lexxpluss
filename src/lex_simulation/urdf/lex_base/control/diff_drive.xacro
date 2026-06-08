@@ -36,8 +36,8 @@
                 <maxWheelTorque>100</maxWheelTorque>
                 <maxWheelAcceleration>1.0</maxWheelAcceleration>
 
-                <!-- Publish odometry TF -->
-                <publishOdomTF>true</publishOdomTF>
+                <!-- Publish odometry TF (disabled - EKF handles TF) -->
+                <publishOdomTF>false</publishOdomTF>
                 <publishWheelTF>false</publishWheelTF>
 
                 <!-- Odometry noise -->

@@ -7,6 +7,9 @@
     <!-- <arg name="model" default="$(find lex_simulation)/urdf/lex_base/attachment/arm.urdf.xacro" /> -->
     <arg name="rvizconfig" default="$(find lex_simulation)/rviz/lex_robot.rviz" />
 
+
+    <param name="/use_sim_time" value="true" />
+
     <!-- Load robot description to parameter server -->
     <param name="robot_description"
             command="$(find xacro)/xacro $(arg model)" />

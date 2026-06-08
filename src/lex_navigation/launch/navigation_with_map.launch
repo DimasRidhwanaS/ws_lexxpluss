@@ -5,17 +5,23 @@
     <arg name="use_sim_time"   default="true" />
     <arg name="map_file"       default="$(find lex_navigation)/maps/warehouse.yaml" />
     <arg name="scan_topic"     default="/scan" />
-    <arg name="odom_topic"     default="/odom" />
+    <arg name="odom_topic"     default="/odom/filtered" />
     <arg name="cmd_vel_topic"  default="/cmd_vel" />
 
     <param name="/use_sim_time" value="$(arg use_sim_time)" />
+
+    <!-- EKF Localization - Fuses wheel odometry and IMU -->
+    <rosparam file="$(find lex_navigation)/config/6_ekf_localization.yaml" command="load" />
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" output="screen">
+        <remap from="/odometry/filtered" to="/odom/filtered" />
+    </node>
 
     <!-- Map Server -->
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
         <param name="use_sim_time" value="$(arg use_sim_time)" />
     </node>
 
-    <!-- AMCL Localization -->
+    <!-- AMCL Localization - Corrects drift using laser scan -->
     <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <param name="use_sim_time" value="$(arg use_sim_time)" />
         <param name="odom_frame_id" value="odom" />
